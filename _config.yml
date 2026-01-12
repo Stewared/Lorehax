@@ -1,0 +1,13 @@
+title: Your Blog Title
+description: A short description of your blog
+theme: jekyll-theme-hacker
+
+# Build settings
+markdown: kramdown
+permalink: /:year/:month/:day/:title/
+
+# Collections for blog posts
+collections:
+  posts:
+    output: true
+    permalink: /:year/:month/:day/:title/

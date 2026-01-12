@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <title>{{ page.title }} - {{ site.title }}</title>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+            <h2>{{ site.description }}</h2>
+        </div>
+    </header>
+    <div class="container">
+        <section id="main_content">
+            <h1>{{ page.title }}</h1>
+            <p><small>{{ page.date | date: "%B %d, %Y" }}</small></p> {{ content }}
+            <hr>
+            <p><a href="{{ '/' | relative_url }}">← Back to home</a></p>
+        </section>
+    </div>
+</body>
+
+</html>
