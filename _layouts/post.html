@@ -1,29 +1,76 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
+<html lang="en-US">
 
 <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-    <title>{{ page.title }} - {{ site.title }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}"> {% seo %}
 </head>
 
 <body>
     <header>
         <div class="container">
-            <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
-            <h2>{{ site.description }}</h2>
+            <a id="a-title" href="/">
+                <h1>{{ site.title | default: site.github.repository_name }}</h1>
+            </a>
+            <h2>{{ site.description | default: site.github.project_tagline }}</h2>
         </div>
     </header>
     <div class="container">
-        <section id="main_content">
-            <h1>{{ page.title }}</h1>
-            <p><small>{{ page.date | date: "%B %d, %Y" }}</small></p> {{ content }}
-            <hr>
-            <p><a href="{{ '/' | relative_url }}">← Back to home</a></p>
-        </section>
+        <div class="content-wrapper">
+            <!-- Left Sidebar: Recent Posts --> {% unless page.url == "/" or page.url == "/index.html" %} <aside class="sidebar sidebar-left">
+                <h3>Recent Posts</h3>
+                <ul> {% for post in site.posts limit:10 %} <li>
+                        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                        <br><small>{{ post.date | date: "%b %d, %Y" }}</small>
+                    </li> {% endfor %} </ul>
+            </aside> {% endunless %} <!-- Main Content -->
+            <main id="main_content"> {{ content }} </main>
+            <!-- Right Sidebar: Table of Contents --> {% unless page.url == "/" or page.url == "/index.html" %} <aside class="sidebar sidebar-right">
+                <h3>On This Page</h3>
+                <div id="toc"></div>
+            </aside> {% endunless %}
+        </div>
     </div>
+    <script>
+        // Auto-generate table of contents from h2 and h3 headers
+        document.addEventListener('DOMContentLoaded', function () {
+            const content = document.getElementById('main_content');
+            const toc = document.getElementById('toc');
+            const headers = content.querySelectorAll('h2, h3');
+
+            if (headers.length === 0) {
+                toc.innerHTML = '<p><small>No headers found</small></p>';
+                return;
+            }
+
+            const ul = document.createElement('ul');
+            headers.forEach(header => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+
+                // Create ID for header if it doesn't have one
+                if (!header.id) {
+                    header.id = header.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                }
+
+                a.href = '#' + header.id;
+                a.textContent = header.textContent;
+                li.appendChild(a);
+
+                if (header.tagName === 'H3') {
+                    li.style.marginLeft = '15px';
+                    li.style.fontSize = '0.9em';
+                }
+
+                ul.appendChild(li);
+            });
+
+            toc.appendChild(ul);
+        });
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,140 @@
+/* Make the container a better size for the sidebar */
+.container:has(.sidebar-left),
+.container:has(.sidebar-right) {
+    max-width: none;
+    width: 90%;
+}
+
+/* Images in posts */
+#main_content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+/* Image captions (em/italic right after image) */
+#main_content img+em {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    color: #999;
+    margin-top: -15px;
+    margin-bottom: 20px;
+}
+
+.post-preview {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #333;
+}
+
+.post-preview:last-child {
+    border-bottom: none;
+}
+
+.post-preview h2 {
+    margin-bottom: 5px;
+}
+
+.post-date {
+    margin: 5px 0 10px 0;
+    color: #999;
+}
+
+.post-thumbnail {
+    max-width: 300px;
+    max-height: 200px;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    margin: initial !important;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+.post-thumbnail:hover {
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+
+.content-wrapper {
+    display: grid;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* Index page: full width main content only */
+.content-wrapper:not(:has(.sidebar-left)):not(:has(.sidebar-right)) {
+    grid-template-columns: 1fr;
+}
+
+/* Post pages: left sidebar + main + right sidebar */
+.content-wrapper:has(.sidebar-left):has(.sidebar-right) {
+    grid-template-columns: 180px 1fr 180px;
+}
+
+/* Fallback if only one sidebar exists */
+.content-wrapper:has(.sidebar-left):not(:has(.sidebar-right)) {
+    grid-template-columns: 180px 1fr;
+}
+
+.content-wrapper:has(.sidebar-right):not(:has(.sidebar-left)) {
+    grid-template-columns: 1fr 180px;
+}
+
+.sidebar {
+    font-size: 0.9em;
+}
+
+.sidebar h3 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 5px;
+}
+
+.sidebar-left ul,
+.sidebar-right ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-left li {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.sidebar-left li:last-child {
+    border-bottom: none;
+}
+
+.sidebar-right li {
+    margin-bottom: 8px;
+}
+
+.sidebar a {
+    color: #63c0f5;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive: stack on mobile */
+@media (max-width: 768px) {
+    .content-wrapper {
+        grid-template-columns: 1fr !important;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
+        display: none;
+    }
+}
