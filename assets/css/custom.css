@@ -75,33 +75,53 @@
 /* Post pages: left sidebar + main + right sidebar */
 .content-wrapper:has(.sidebar-left):has(.sidebar-right) {
     grid-template-columns: 180px 1fr 180px;
+    align-items: start;
 }
 
 /* Fallback if only one sidebar exists */
 .content-wrapper:has(.sidebar-left):not(:has(.sidebar-right)) {
     grid-template-columns: 180px 1fr;
+    align-items: start;
 }
 
 .content-wrapper:has(.sidebar-right):not(:has(.sidebar-left)) {
     grid-template-columns: 1fr 180px;
+    align-items: start;
 }
 
 .sidebar {
     font-size: 0.9em;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px dashed #b5e853;
+    border-radius: 4px;
 }
 
 .sidebar h3 {
     font-size: 1.1em;
     margin-bottom: 10px;
+    margin-top: 0;
     border-bottom: 1px solid #444;
     padding-bottom: 5px;
 }
 
 .sidebar-left ul,
 .sidebar-right ul {
-    list-style: none;
     padding: 0;
     margin: 0;
+}
+
+.sidebar-left ul {
+    list-style: none;
+}
+
+.sidebar-right ul {
+    list-style: circle;
+    padding-left: 20px;
+}
+
+.sidebar-right li::marker {
+    color: #b5e853;
 }
 
 .sidebar-left li {
@@ -137,4 +157,134 @@
     .sidebar-right {
         display: none;
     }
+}
+
+/* Flag badges */
+.flag-badge {
+    display: inline-block;
+    background-color: #1a1a1a;
+    color: #b5e853;
+    padding: 3px 8px;
+    margin-right: 8px;
+    /* margin-bottom: 5px; */
+    border: 1px solid #b5e853;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-family: monospace;
+}
+
+.post-flags {
+    margin: 10px 0;
+}
+
+/* Flag filters */
+.flag-filters {
+    /* margin-bottom: 30px; */
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px dashed #b5e853;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.flag-filters span {
+    color: #b5e853;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.flag-filter {
+    display: inline-block;
+    background-color: #1a1a1a;
+    color: #b5e853;
+    padding: 5px 12px;
+    margin-right: 8px;
+    /* margin-bottom: 5px; */
+    border: 1px solid #b5e853;
+    border-radius: 3px;
+    font-size: 0.9em;
+    font-family: monospace;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.flag-filter:hover,
+.flag-filter.active {
+    background-color: #b5e853;
+    color: #000;
+}
+/* Prevent flag filters from being draggable */
+.flag-filter {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Section headers */
+.section-header {
+    margin-top: 50px;
+}
+
+/* Post author */
+.post-author {
+    margin: 10px 0;
+    color: #999;
+}
+
+.post-author a {
+    color: #63c0f5;
+    text-decoration: none;
+}
+
+.post-author a:hover {
+    text-decoration: underline;
+}
+
+/* Article title */
+#main_content > h1:first-child {
+    margin-bottom: 0px;
+}
+
+/* Post flags in article */
+#main_content .post-flags {
+    margin-bottom: 40px;
+}
+/* GitHub icon in header */
+header .github-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #b5e853;
+    transition: color 0.2s;
+}
+
+header .github-icon:hover {
+    color: #fff;
+}
+
+header .github-icon svg {
+    display: block;
+}
+
+/* Footer */
+footer {
+    margin-top: 60px;
+    padding: 20px 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px dashed #b5e853;
+    text-align: center;
+    font-size: 0.9em;
+}
+
+footer p {
+    margin: 5px 0;
+    color: #999;
+}
+
+footer a {
+    color: #63c0f5;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
 }

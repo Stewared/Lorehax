@@ -1,6 +1,13 @@
 title: LoreHax
-description: Some subtitle or description here
+description: Three Tech Geeks doing Tech Geek Things
 theme: jekyll-theme-hacker
+url: https://lorehax.stewared.com
+
+# Social Links
+discord_url: https://discord.gg/brEHMjsxdU
+github_link: https://github.com/Stewared
+rss_url: https://lorehax.stewared.com/feed.xml
+donation_url: https://www.paypal.com/donate?business=kestron@kestron.com&no_recurring=0&item_name=Stewared&item_number=Lorehax
 
 # Build settings
 markdown: kramdown

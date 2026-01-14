@@ -1,1 +1,9 @@
 _site
+
+# Other stuffs
+node_modules
+serveFeedback.js
+feedback.txt
+package.json
+package-lock.json
+WIPFiles/*

@@ -278,6 +278,7 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  jekyll
   wdm (>= 0.1.0)
 
 CHECKSUMS
