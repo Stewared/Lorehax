@@ -3,7 +3,7 @@ layout: post
 title: "When Two Miis Love Each Other Very Much..."
 article_title: "You See Kids, When Two Miis Love Each Other Very Much..."
 date: 2026-01-14
-thumbnail: assets\images\Tomodachi_Love.png
+thumbnail: assets/images/Tomodachi_Love.png
 flags: [miis, decompilation]
 author: Kestron, WKoA
 ---
