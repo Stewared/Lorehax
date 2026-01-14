@@ -280,7 +280,6 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  bundler (~> 2.4)
   github-pages
   wdm (>= 0.1.0)
   webrick
