@@ -12,6 +12,8 @@ donation_url: https://www.paypal.com/donate?business=kestron@kestron.com&no_recu
 
 # Build settings
 markdown: kramdown
+kramdown:
+  hard_wrap: true
 permalink: /:year/:month/:day/:title/
 
 # Collections for blog posts
