@@ -32,17 +32,23 @@
     <div class="container">
         <div class="content-wrapper">
             <!-- Left Sidebar: Recent Posts --> {% unless page.url == "/" or page.url == "/index.html" %} <aside
-                class="sidebar sidebar-left">
-                <h3>Recent Posts</h3>
-                <ul> {% for post in site.posts limit:10 %}
-                    {% unless post.other_category %}
-                    <li style="list-style-image: none">
-                        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-                        <br><small>{{ post.date | date: "%b %d, %Y" }}</small>
-                    </li>
-                    {% endunless %}
-                    {% endfor %}
-                </ul>
+                id="sidebar-recent-posts" class="sidebar sidebar-left" data-sidebar-drawer>
+                <button class="sidebar-tab" type="button" aria-controls="sidebar-recent-posts" aria-expanded="false"
+                    data-sidebar-toggle>
+                    Recent Posts
+                </button>
+                <div class="sidebar-content">
+                    <h3>Recent Posts</h3>
+                    <ul> {% for post in site.posts limit:10 %}
+                        {% unless post.other_category %}
+                        <li style="list-style-image: none">
+                            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+                            <br><small>{{ post.date | date: "%b %d, %Y" }}</small>
+                        </li>
+                        {% endunless %}
+                        {% endfor %}
+                    </ul>
+                </div>
             </aside> {% endunless %} <!-- Main Content -->
             <main id="main_content">
                 {% if page.url != "/" and page.url != "/index.html" %}
@@ -81,50 +87,215 @@
                 {{ content }}
             </main>
             <!-- Right Sidebar: Table of Contents --> {% unless page.url == "/" or page.url == "/index.html" %}
-            <aside class="sidebar sidebar-right">
-                <h3>On This Page</h3>
-                <div id="toc"></div>
+            <aside id="sidebar-toc" class="sidebar sidebar-right" data-sidebar-drawer>
+                <button class="sidebar-tab" type="button" aria-controls="sidebar-toc" aria-expanded="false"
+                    data-sidebar-toggle>
+                    On This Page
+                </button>
+                <div class="sidebar-content">
+                    <h3>On This Page</h3>
+                    <div id="toc"></div>
+                </div>
             </aside>
             {% endunless %}
         </div>
     </div>
+    <button type="button" class="sidebar-backdrop" aria-label="Close side menus"></button>
     <script>
-        // Auto-generate table of contents from h2 and h3 headers
         document.addEventListener('DOMContentLoaded', function () {
             const content = document.getElementById('main_content');
             const toc = document.getElementById('toc');
-            const headers = content.querySelectorAll('h2, h3');
+            // Auto-generate table of contents from h2 and h3 headers on pages with a TOC sidebar.
+            if (content && toc) {
+                const headers = content.querySelectorAll('h2, h3');
 
-            if (headers.length === 0) {
-                toc.innerHTML = '<p><small>No headers found</small></p>';
+                if (headers.length === 0) {
+                    toc.innerHTML = '<p><small>No headers found</small></p>';
+                } else {
+                    const ul = document.createElement('ul');
+                    headers.forEach(header => {
+                        const li = document.createElement('li');
+                        li.style.listStyleImage = 'none';
+
+                        const a = document.createElement('a');
+
+                        // Create ID for header if it doesn't have one
+                        if (!header.id) {
+                            header.id = header.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                        }
+
+                        a.href = '#' + header.id;
+                        a.textContent = header.textContent;
+                        li.appendChild(a);
+
+                        if (header.tagName === 'H3') {
+                            li.style.marginLeft = '15px';
+                            li.style.fontSize = '0.9em';
+                        }
+
+                        ul.appendChild(li);
+                    });
+
+                    toc.appendChild(ul);
+                }
+            }
+
+            const sidebars = Array.from(document.querySelectorAll('[data-sidebar-drawer]'));
+            const backdrop = document.querySelector('.sidebar-backdrop');
+            if (sidebars.length === 0 || !backdrop) {
                 return;
             }
 
-            const ul = document.createElement('ul');
-            headers.forEach(header => {
-                const li = document.createElement('li');
-                li.style.listStyleImage = 'none';
-                
-                const a = document.createElement('a');
+            const mobileQuery = window.matchMedia('(max-width: 768px)');
+            const edgeZone = 24;
+            const swipeDistance = 45;
+            const maxVerticalDrift = 80;
 
-                // Create ID for header if it doesn't have one
-                if (!header.id) {
-                    header.id = header.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            function isMobile() {
+                return mobileQuery.matches;
+            }
+
+            function syncSidebarButtons(sidebar) {
+                const isOpen = sidebar.classList.contains('is-open');
+                sidebar.querySelectorAll('[data-sidebar-toggle]').forEach((button) => {
+                    button.setAttribute('aria-expanded', String(isOpen));
+                });
+            }
+
+            function updateBackdropAndBodyLock() {
+                const hasOpenSidebar = sidebars.some((sidebar) => sidebar.classList.contains('is-open'));
+                backdrop.classList.toggle('is-visible', hasOpenSidebar && isMobile());
+                document.body.classList.toggle('sidebar-drawer-open', hasOpenSidebar && isMobile());
+            }
+
+            function closeAllSidebars() {
+                sidebars.forEach((sidebar) => {
+                    sidebar.classList.remove('is-open');
+                    syncSidebarButtons(sidebar);
+                });
+                updateBackdropAndBodyLock();
+            }
+
+            function setSidebarState(sidebar, shouldOpen) {
+                if (!sidebar || !isMobile()) {
+                    return;
                 }
 
-                a.href = '#' + header.id;
-                a.textContent = header.textContent;
-                li.appendChild(a);
-
-                if (header.tagName === 'H3') {
-                    li.style.marginLeft = '15px';
-                    li.style.fontSize = '0.9em';
+                if (shouldOpen) {
+                    sidebars.forEach((candidate) => {
+                        if (candidate !== sidebar) {
+                            candidate.classList.remove('is-open');
+                            syncSidebarButtons(candidate);
+                        }
+                    });
+                    sidebar.classList.add('is-open');
+                } else {
+                    sidebar.classList.remove('is-open');
                 }
 
-                ul.appendChild(li);
+                syncSidebarButtons(sidebar);
+                updateBackdropAndBodyLock();
+            }
+
+            document.querySelectorAll('[data-sidebar-toggle]').forEach((button) => {
+                button.addEventListener('click', function () {
+                    const sidebar = this.closest('[data-sidebar-drawer]');
+                    if (!sidebar) {
+                        return;
+                    }
+                    const shouldOpen = !sidebar.classList.contains('is-open');
+                    setSidebarState(sidebar, shouldOpen);
+                });
             });
 
-            toc.appendChild(ul);
+            backdrop.addEventListener('click', closeAllSidebars);
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    closeAllSidebars();
+                }
+            });
+
+            let gestureType = null;
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            function getSidebarBySide(side) {
+                return sidebars.find((sidebar) => sidebar.classList.contains(side === 'left' ? 'sidebar-left' : 'sidebar-right'));
+            }
+
+            document.addEventListener('touchstart', function (event) {
+                if (!isMobile() || event.touches.length !== 1) {
+                    return;
+                }
+
+                const touch = event.touches[0];
+                const leftSidebar = getSidebarBySide('left');
+                const rightSidebar = getSidebarBySide('right');
+                const leftRect = leftSidebar ? leftSidebar.getBoundingClientRect() : null;
+                const rightRect = rightSidebar ? rightSidebar.getBoundingClientRect() : null;
+
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                gestureType = null;
+
+                if (leftSidebar && leftSidebar.classList.contains('is-open') && leftRect && touchStartX <= leftRect.right) {
+                    gestureType = 'close-left';
+                    return;
+                }
+
+                if (rightSidebar && rightSidebar.classList.contains('is-open') && rightRect && touchStartX >= rightRect.left) {
+                    gestureType = 'close-right';
+                    return;
+                }
+
+                if (leftSidebar && !leftSidebar.classList.contains('is-open') && touchStartX <= edgeZone) {
+                    gestureType = 'open-left';
+                    return;
+                }
+
+                if (rightSidebar && !rightSidebar.classList.contains('is-open') && touchStartX >= window.innerWidth - edgeZone) {
+                    gestureType = 'open-right';
+                }
+            }, { passive: true });
+
+            document.addEventListener('touchend', function (event) {
+                if (!isMobile() || !gestureType || event.changedTouches.length === 0) {
+                    return;
+                }
+
+                const touch = event.changedTouches[0];
+                const deltaX = touch.clientX - touchStartX;
+                const deltaY = Math.abs(touch.clientY - touchStartY);
+                const leftSidebar = getSidebarBySide('left');
+                const rightSidebar = getSidebarBySide('right');
+
+                if (deltaY > maxVerticalDrift) {
+                    gestureType = null;
+                    return;
+                }
+
+                if (gestureType === 'open-left' && deltaX > swipeDistance) {
+                    setSidebarState(leftSidebar, true);
+                } else if (gestureType === 'open-right' && deltaX < -swipeDistance) {
+                    setSidebarState(rightSidebar, true);
+                } else if (gestureType === 'close-left' && deltaX < -swipeDistance) {
+                    setSidebarState(leftSidebar, false);
+                } else if (gestureType === 'close-right' && deltaX > swipeDistance) {
+                    setSidebarState(rightSidebar, false);
+                }
+
+                gestureType = null;
+            }, { passive: true });
+
+            window.addEventListener('resize', function () {
+                if (!isMobile()) {
+                    closeAllSidebars();
+                } else {
+                    updateBackdropAndBodyLock();
+                }
+            });
+
+            closeAllSidebars();
         });
     </script>
     <footer>

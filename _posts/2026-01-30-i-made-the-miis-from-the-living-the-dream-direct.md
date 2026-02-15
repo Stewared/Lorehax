@@ -4,7 +4,7 @@ title: "I Made the Miis from the Living the Dream Direct"
 article_title: "I Made the Miis from the Living the Dream Direct"
 date: 2026-01-30
 thumbnail: /assets/images/Tomodachi3/Angie1.png
-flags: [miis, supergeek]
+flags: [miis]
 author: Kestron
 ---
 

@@ -4,6 +4,10 @@ theme: jekyll-theme-hacker
 url: https://lorehax.stewared.com
 repository: Stewared/Lorehax
 
+# Local dev server
+host: 0.0.0.0
+port: 4000
+
 # Social Links
 discord_url: https://discord.gg/brEHMjsxdU
 github_link: https://github.com/Stewared
