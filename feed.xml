@@ -2,7 +2,7 @@
 layout: none
 ---
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>{{ site.title | xml_escape }}</title>
     <description>{{ site.description | xml_escape }}</description>
@@ -15,6 +15,10 @@ layout: none
         <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
         <link>{{ post.url | absolute_url }}</link>
         <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+        {% if post.thumbnail %}
+          <media:thumbnail url="{{ post.thumbnail | absolute_url | xml_escape }}" />
+          <media:content url="{{ post.thumbnail | absolute_url | xml_escape }}" medium="image" />
+        {% endif %}
         {% if post.authors %}
           {% for author in post.authors %}
             <author>{{ author | xml_escape }}</author>

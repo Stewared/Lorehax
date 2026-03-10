@@ -5,7 +5,7 @@ url: https://lorehax.stewared.com
 repository: Stewared/Lorehax
 
 # Local dev server
-host: 0.0.0.0
+host: 127.0.0.1
 port: 4000
 
 # Social Links
