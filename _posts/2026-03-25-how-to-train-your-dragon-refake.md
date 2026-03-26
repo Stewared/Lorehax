@@ -3,7 +3,7 @@ layout: post
 title: "How to Train Your Dragon Refake"
 article_title: "How to Train Your Dragon Refake"
 date: 2026-03-25
-thumbnail: /assets/images/marioGeekery/peachXBowser.png
+thumbnail: /assets/images/astridHorrified.jpg
 flags: [httyd, commentary]
 author: Kestron
 ---
